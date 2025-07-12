@@ -1,0 +1,15 @@
+meta {
+  name: [GET] name이 같은 데이터만 가져오기
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:3000/find?name=먹거리 고을
+  body: text
+  auth: inherit
+}
+
+params:query {
+  name: 먹거리 고을
+}
