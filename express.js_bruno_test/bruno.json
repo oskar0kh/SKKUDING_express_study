@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "express.js_bruno_test",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
