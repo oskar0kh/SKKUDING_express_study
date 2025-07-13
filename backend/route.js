@@ -197,4 +197,59 @@ router.delete('/delete', (req, res) => {
     });
 });
 
+// [PATCH] 특정 name의 데이터 수정
+// Query 사용
+// URL : http://localhost:3000/update?name=생각나는 순대
+
+router.patch('/update', (req, res) => {
+
+    const filePath = path.join(__dirname, 'data', 'restaurants.json');
+    const name = req.query.name;
+
+    // 1. req.body에서 수정할 데이터 가져오기
+    const updateFields = req.body;
+
+    fs.readFile(filePath, 'utf-8', (err, data) => {
+
+        if(err){
+            console.error(`파일 읽기 오류 : ${err}`);
+            return res.status(500).json({error : '파일 읽기 오류'});
+        }
+
+        try{
+            
+            // 2. 전체 json 파일 가져오기
+            const entire = JSON.parse(data);
+
+            // 3. 그 중, restaurants 배열만 가져오기
+            const restaurantList = entire.restaurants;
+
+            // 4. 해당 배열에서 name이 같은거 있는지 찾기
+            const target = restaurantList.find(r => r.name === name);
+
+            if(!target) return res.status(404).json({ error : '해당 맛집 정보가 존재하지 않습니다'});
+
+            // 5. Object.assign() -> 찾은 부분의 정보 수정
+            Object.assign(target, updateFields);
+        
+            // 6. 수정한 restaurantList 다시 json 파일에 저장하기
+            const updated = JSON.stringify({restaurants : restaurantList}, null, 2);
+
+            fs.writeFile(filePath, updated, 'utf-8', (writeErr) => {
+	            if(writeErr) {
+		            console.error(`파일 쓰기 오류: ${writeErr}`);
+			        return res.status(500).json({ error: '파일 저장 실패' });
+	            }
+
+		           res.status(200).json(target); // 6-1. 수정된 결과 반환
+            });
+
+        } catch(parseErr){
+            console.error(`JSON 파싱 오류: ${parseErr}`);
+            res.status(500).json({ error: 'JSON 파싱 실패' });
+        }
+
+    });
+});
+
 export default router;

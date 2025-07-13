@@ -1,0 +1,26 @@
+meta {
+  name: [PATCH] name이 같은 부분의 데이터 수정
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:3000/update?name=생각나는 순대
+  body: text
+  auth: inherit
+}
+
+params:query {
+  name: 생각나는 순대
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:text {
+  {
+      "phone": "1111-1111-1111",
+      "rating" : 3.5
+  }
+}
