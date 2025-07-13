@@ -1,0 +1,15 @@
+meta {
+  name: [DELETE] name으로 특정 맛집 정보 삭제하기
+  type: http
+  seq: 4
+}
+
+delete {
+  url: http://localhost:3000/delete?name=먹거리 고을
+  body: text
+  auth: inherit
+}
+
+params:query {
+  name: 먹거리 고을
+}
